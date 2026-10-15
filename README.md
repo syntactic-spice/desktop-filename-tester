@@ -56,6 +56,9 @@ For each run:
 2. Pin it to the dock and check the pinned icon and the running window.
 3. Click through the buttons. The log at the bottom says what was sent.
 
+<img width="759" height="822" alt="image" src="https://github.com/user-attachments/assets/de7bcb5d-4410-4bee-ace0-06a936fccd8d" />
+
+
 The identity panel shows whether a desktop file with the built-in ID exists,
 which desktop file launched the app (`GIO_LAUNCHED_DESKTOP_FILE`), the systemd
 unit, and the app ID xdg-desktop-portal would derive from that unit.
