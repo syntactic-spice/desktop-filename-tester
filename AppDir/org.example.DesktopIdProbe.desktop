@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Desktop ID Probe
+Comment=Tests what depends on the .desktop file name
+Exec=dtprobe %u
+Icon=org.example.DesktopIdProbe
+Categories=Development;
+MimeType=x-scheme-handler/dtprobe-static;
+StartupNotify=true
+Terminal=false
+X-AppImage-Version=1.0

@@ -1,0 +1,476 @@
+{
+  "savedAt": "2026-10-15T09:57:53.894Z",
+  "envs": {
+    "gnome": {
+      "meta": {
+        "distro": "Ubuntu 26.04.1",
+        "desktop": "50",
+        "session": "Wayland",
+        "portal": "",
+        "extras": ""
+      },
+      "cells": {
+        "win|A": {
+          "s": "works",
+          "n": ""
+        },
+        "win|B": {
+          "s": "partial",
+          "n": "generic icon, cannot be pinned"
+        },
+        "win|C": {
+          "s": "works",
+          "n": ""
+        },
+        "win|D": {
+          "s": "partial",
+          "n": "generic icon, cannot be pinned"
+        },
+        "fdo|A": {
+          "s": "works",
+          "n": ""
+        },
+        "fdo|B": {
+          "s": "partial",
+          "n": "generic icon, ID instead of app name, raise on click"
+        },
+        "fdo|C": {
+          "s": "works",
+          "n": ""
+        },
+        "fdo|D": {
+          "s": "partial",
+          "n": "generic icon, ID instead of app name, raise on click"
+        },
+        "fdochild|A": {
+          "s": "broken",
+          "n": "Notification immediately disappears"
+        },
+        "fdochild|B": {
+          "s": "partial",
+          "n": "generic icon, actual name, raise on click"
+        },
+        "fdochild|C": {
+          "s": "partial",
+          "n": "generic icon, ID instead of app name, does not raise on click"
+        },
+        "fdochild|D": {
+          "s": "partial",
+          "n": "generic icon, actual name, does not raise on click"
+        },
+        "gnotif|A": {
+          "s": "works",
+          "n": ""
+        },
+        "gnotif|B": {
+          "s": "broken",
+          "n": "No notification"
+        },
+        "gnotif|C": {
+          "s": "broken",
+          "n": "No notification"
+        },
+        "gnotif|D": {
+          "s": "broken",
+          "n": "No notification"
+        },
+        "badge|A": {
+          "s": "works",
+          "n": ""
+        },
+        "badge|B": {
+          "s": "broken",
+          "n": ""
+        },
+        "badge|C": {
+          "s": "broken",
+          "n": ""
+        },
+        "badge|D": {
+          "s": "broken",
+          "n": ""
+        },
+        "rtscheme|A": {
+          "s": "works",
+          "n": ""
+        },
+        "rtscheme|B": {
+          "s": "broken",
+          "n": ""
+        },
+        "rtscheme|C": {
+          "s": "broken",
+          "n": ""
+        },
+        "rtscheme|D": {
+          "s": "broken",
+          "n": ""
+        },
+        "staticscheme|A": {
+          "s": "works",
+          "n": ""
+        },
+        "staticscheme|B": {
+          "s": "works",
+          "n": ""
+        },
+        "staticscheme|C": {
+          "s": "works",
+          "n": ""
+        },
+        "staticscheme|D": {
+          "s": "works",
+          "n": ""
+        },
+        "portal|A": {
+          "s": "works",
+          "n": ""
+        },
+        "portal|B": {
+          "s": "broken",
+          "n": ""
+        },
+        "portal|C": {
+          "s": "broken",
+          "n": ""
+        },
+        "portal|D": {
+          "s": "broken",
+          "n": ""
+        },
+        "mpris|A": {
+          "s": "works",
+          "n": ""
+        },
+        "mpris|B": {
+          "s": "partial",
+          "n": "generic icon, actual name, click sends a new notification which raises on click"
+        },
+        "mpris|C": {
+          "s": "partial",
+          "n": "generic icon, actual name, click sends a new notification which raises on click"
+        },
+        "mpris|D": {
+          "s": "partial",
+          "n": "generic icon, actual name, click sends a new notification which raises on click"
+        }
+      },
+      "notes": "",
+      "annotations": {
+        "fdochild|A": "Probe artifact, not a GNOME bug. GNOME removes notifications from an identified app when the sender leaves the session bus, and the probe's helper process exited right after sending. Disappearing here shows GNOME did match the app. Fixed in the probe (the helper now stays until the notification closes); re-test pending."
+      }
+    },
+    "kde": {
+      "meta": {
+        "distro": "",
+        "desktop": "",
+        "session": "",
+        "portal": "",
+        "extras": ""
+      },
+      "cells": {
+        "win|A": {
+          "s": "",
+          "n": ""
+        },
+        "win|B": {
+          "s": "",
+          "n": ""
+        },
+        "win|C": {
+          "s": "",
+          "n": ""
+        },
+        "win|D": {
+          "s": "",
+          "n": ""
+        },
+        "fdo|A": {
+          "s": "",
+          "n": ""
+        },
+        "fdo|B": {
+          "s": "",
+          "n": ""
+        },
+        "fdo|C": {
+          "s": "",
+          "n": ""
+        },
+        "fdo|D": {
+          "s": "",
+          "n": ""
+        },
+        "fdochild|A": {
+          "s": "",
+          "n": ""
+        },
+        "fdochild|B": {
+          "s": "",
+          "n": ""
+        },
+        "fdochild|C": {
+          "s": "",
+          "n": ""
+        },
+        "fdochild|D": {
+          "s": "",
+          "n": ""
+        },
+        "gnotif|A": {
+          "s": "",
+          "n": ""
+        },
+        "gnotif|B": {
+          "s": "",
+          "n": ""
+        },
+        "gnotif|C": {
+          "s": "",
+          "n": ""
+        },
+        "gnotif|D": {
+          "s": "",
+          "n": ""
+        },
+        "badge|A": {
+          "s": "",
+          "n": ""
+        },
+        "badge|B": {
+          "s": "",
+          "n": ""
+        },
+        "badge|C": {
+          "s": "",
+          "n": ""
+        },
+        "badge|D": {
+          "s": "",
+          "n": ""
+        },
+        "rtscheme|A": {
+          "s": "",
+          "n": ""
+        },
+        "rtscheme|B": {
+          "s": "",
+          "n": ""
+        },
+        "rtscheme|C": {
+          "s": "",
+          "n": ""
+        },
+        "rtscheme|D": {
+          "s": "",
+          "n": ""
+        },
+        "staticscheme|A": {
+          "s": "",
+          "n": ""
+        },
+        "staticscheme|B": {
+          "s": "",
+          "n": ""
+        },
+        "staticscheme|C": {
+          "s": "",
+          "n": ""
+        },
+        "staticscheme|D": {
+          "s": "",
+          "n": ""
+        },
+        "portal|A": {
+          "s": "",
+          "n": ""
+        },
+        "portal|B": {
+          "s": "",
+          "n": ""
+        },
+        "portal|C": {
+          "s": "",
+          "n": ""
+        },
+        "portal|D": {
+          "s": "",
+          "n": ""
+        },
+        "mpris|A": {
+          "s": "",
+          "n": ""
+        },
+        "mpris|B": {
+          "s": "",
+          "n": ""
+        },
+        "mpris|C": {
+          "s": "",
+          "n": ""
+        },
+        "mpris|D": {
+          "s": "",
+          "n": ""
+        }
+      },
+      "notes": ""
+    },
+    "noctalia": {
+      "meta": {
+        "distro": "Ubuntu 26.04.1",
+        "desktop": "",
+        "session": "Wayland",
+        "portal": "",
+        "extras": ""
+      },
+      "cells": {
+        "win|A": {
+          "s": "works",
+          "n": ""
+        },
+        "win|B": {
+          "s": "works",
+          "n": ""
+        },
+        "win|C": {
+          "s": "works",
+          "n": ""
+        },
+        "win|D": {
+          "s": "works",
+          "n": ""
+        },
+        "fdo|A": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdo|B": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdo|C": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdo|D": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdochild|A": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdochild|B": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdochild|C": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdochild|D": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "gnotif|A": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "gnotif|B": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "gnotif|C": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "gnotif|D": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "badge|A": {
+          "s": "na",
+          "n": "unsupported"
+        },
+        "badge|B": {
+          "s": "na",
+          "n": "unsupported"
+        },
+        "badge|C": {
+          "s": "na",
+          "n": "unsupported"
+        },
+        "badge|D": {
+          "s": "na",
+          "n": "unsupported"
+        },
+        "rtscheme|A": {
+          "s": "works",
+          "n": ""
+        },
+        "rtscheme|B": {
+          "s": "broken",
+          "n": ""
+        },
+        "rtscheme|C": {
+          "s": "broken",
+          "n": ""
+        },
+        "rtscheme|D": {
+          "s": "broken",
+          "n": ""
+        },
+        "staticscheme|A": {
+          "s": "works",
+          "n": ""
+        },
+        "staticscheme|B": {
+          "s": "works",
+          "n": ""
+        },
+        "staticscheme|C": {
+          "s": "works",
+          "n": ""
+        },
+        "staticscheme|D": {
+          "s": "works",
+          "n": ""
+        },
+        "portal|A": {
+          "s": "works",
+          "n": ""
+        },
+        "portal|B": {
+          "s": "broken",
+          "n": ""
+        },
+        "portal|C": {
+          "s": "broken",
+          "n": ""
+        },
+        "portal|D": {
+          "s": "broken",
+          "n": ""
+        },
+        "mpris|A": {
+          "s": "partial",
+          "n": "no icon, no option to raise, receives events"
+        },
+        "mpris|B": {
+          "s": "partial",
+          "n": "no icon, no option to raise, receives events"
+        },
+        "mpris|C": {
+          "s": "partial",
+          "n": "no icon, no option to raise, receives events"
+        },
+        "mpris|D": {
+          "s": "partial",
+          "n": "no icon, no option to raise, receives events"
+        }
+      },
+      "notes": ""
+    }
+  }
+}
