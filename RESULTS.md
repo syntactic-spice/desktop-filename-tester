@@ -3,10 +3,10 @@
 What breaks when an AppImage's `.desktop` file is installed under a different name.
 Install modes:
 
-- **A: original name**: `./dtprobe-integrate.sh install "$AI"`
-- **B: renamed**: `./dtprobe-integrate.sh install "$AI" --as dtprobe-renamed`
-- **C: renamed + StartupWMClass**: `./dtprobe-integrate.sh install "$AI" --as dtprobe-renamed --wmclass`
-- **D: in a subdirectory**: `./dtprobe-integrate.sh install "$AI" --subdir appimages`
+- **A: original name**: `./dtprobe-integrate.sh install "$AppimagePath"`
+- **B: renamed**: `./dtprobe-integrate.sh install "$AppimagePath" --as dtprobe-renamed`
+- **C: renamed + StartupWMClass**: `./dtprobe-integrate.sh install "$AppimagePath" --as dtprobe-renamed --wmclass`
+- **D: in a subdirectory**: `./dtprobe-integrate.sh install "$AppimagePath" --subdir appimages`
 
 ✅ works · 🟡 partly works · ❌ broken · ➖ not applicable · · not tested
 
@@ -42,10 +42,6 @@ Distro: Ubuntu 26.04.1 · Desktop / shell: 50 · Session: Wayland
 | 5 · Portal `Registry.Register` | ✅ | ❌ | ❌ | ❌ |
 | 6 · MPRIS media widget | ✅ | 🟡 generic icon, actual name, click sends a new notification which raises on click | 🟡 generic icon, actual name, click sends a new notification which raises on click | 🟡 generic icon, actual name, click sends a new notification which raises on click |
 
-## KDE Plasma
-
-Not tested yet.
-
 ## Noctalia + niri
 
 Distro: Ubuntu 26.04.1 · Session: Wayland
@@ -64,5 +60,9 @@ Distro: Ubuntu 26.04.1 · Session: Wayland
 | 6 · MPRIS media widget | 🟡 no icon, no option to raise, receives events | 🟡 no icon, no option to raise, receives events | 🟡 no icon, no option to raise, receives events | 🟡 no icon, no option to raise, receives events |
 
 > **Why notifications and media show 🟡 in every column:** none of it depends on the desktop file. From Noctalia's source: notification icons come only from the notification itself (`app_icon`, `image-path` or `image-data`), and the probe deliberately sends none. A notification is clickable only when it carries a `default` action, which tests 2 and 2b don't send; test 2c does. The media widget shows album art rather than an app icon, never calls MPRIS `Raise`, and uses `DesktopEntry` only to match players to audio streams.
+
+## KDE Plasma
+
+Not tested yet.
 
 <sub>Results saved 2026-10-15.</sub>

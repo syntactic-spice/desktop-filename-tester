@@ -1,0 +1,434 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Desktop ID Probe Results</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@600;700&family=Red+Hat+Mono:wght@400;500&family=Red+Hat+Text:wght@400;500;600&display=swap"><style id="css">
+/* Layout: a lab results sheet. Header with the install modes, then one section per desktop: environment fields above a test x install-mode grid. A save bar sticks to the bottom. */
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --ink: #18212d;
+  --muted: #5a6576;
+  --line: #d9dfe7;
+  --accent: #2a62a6;
+  --accent-ink: #ffffff;
+  --works: #1d7448; --works-bg: #e1f2e8;
+  --partial: #8d5d07; --partial-bg: #faefd6;
+  --broken: #ab2e29; --broken-bg: #fae3e1;
+  --na: #5a6576; --na-bg: #e9edf2;
+  --font-display: "Red Hat Display", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Red Hat Text", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Red Hat Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10151c; --surface: #171f29; --ink: #e3e8ef; --muted: #96a2b3; --line: #29343f;
+    --accent: #72a6e3; --accent-ink: #0c1420;
+    --works: #6cc897; --works-bg: #15332a; --partial: #e3b65f; --partial-bg: #382b12;
+    --broken: #f08b85; --broken-bg: #3c1d1c; --na: #96a2b3; --na-bg: #222c37;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10151c; --surface: #171f29; --ink: #e3e8ef; --muted: #96a2b3; --line: #29343f;
+  --accent: #72a6e3; --accent-ink: #0c1420;
+  --works: #6cc897; --works-bg: #15332a; --partial: #e3b65f; --partial-bg: #382b12;
+  --broken: #f08b85; --broken-bg: #3c1d1c; --na: #96a2b3; --na-bg: #222c37;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 14px; line-height: 1.45; }
+#root { max-width: 1240px; margin: 0 auto; padding-block: 28px 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 28px; }
+h1, h2 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+h1 { font-size: 1.9rem; letter-spacing: -0.01em; }
+h2 { font-size: 1.35rem; }
+p { margin: 0; max-width: 70ch; }
+code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+.intro { display: flex; flex-direction: column; gap: 10px; }
+.intro .lede { color: var(--muted); }
+.modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.mode { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.mode b { font-family: var(--font-display); }
+.mode .tag { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
+.mode code { color: var(--muted); overflow-wrap: anywhere; }
+nav.envnav { display: flex; flex-wrap: wrap; gap: 8px; }
+nav.envnav a { text-decoration: none; color: var(--ink); border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; display: inline-flex; gap: 8px; align-items: baseline; }
+nav.envnav a:hover { border-color: var(--accent); }
+nav.envnav .count { font-family: var(--font-mono); font-size: 0.82rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+section.env { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px; }
+.envhead { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; }
+.envhead .count { font-family: var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.envnote { color: var(--muted); max-width: 90ch; }
+.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.meta label { display: flex; flex-direction: column; gap: 3px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); min-width: 0; }
+input[type="text"], textarea { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; width: 100%; box-sizing: border-box; text-transform: none; letter-spacing: normal; font-size: 0.92rem; }
+textarea { resize: vertical; min-height: 32px; line-height: 1.35; }
+input:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 1120px; table-layout: fixed; }
+thead th:first-child { width: 200px; }
+th, td { border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+thead th { font-family: var(--font-display); font-size: 0.95rem; padding: 10px 12px; background: var(--surface); border-left: 1px solid var(--line); }
+thead th .sub { display: block; font-family: var(--font-body); font-weight: 400; font-size: 0.8rem; color: var(--muted); }
+thead th:first-child { border-left: 0; }
+tbody th { position: sticky; left: 0; z-index: 1; background: var(--surface); width: 200px; min-width: 170px; padding: 10px 12px; font-weight: 600; border-right: 1px solid var(--line); }
+tbody th .hint { display: block; font-weight: 400; font-size: 0.8rem; color: var(--muted); margin-top: 3px; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+td.cell { padding: 8px 10px; border-left: 1px solid var(--line); min-width: 190px; display: table-cell; }
+td.cell[data-s="works"] { background: var(--works-bg); }
+td.cell[data-s="partial"] { background: var(--partial-bg); }
+td.cell[data-s="broken"] { background: var(--broken-bg); }
+td.cell[data-s="na"] { background: var(--na-bg); }
+.cellbox { display: flex; flex-direction: column; gap: 6px; }
+.pred { font-size: 0.8rem; color: var(--muted); }
+.pred .unsure { font-family: var(--font-mono); font-size: 0.72rem; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; margin-left: 4px; white-space: nowrap; }
+.seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.seg button { font: inherit; font-size: 0.78rem; font-weight: 500; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 2px 9px; cursor: pointer; }
+.seg button:hover { border-color: var(--ink); color: var(--ink); }
+.seg button[aria-pressed="true"][data-s="works"] { background: var(--works); border-color: var(--works); color: var(--surface); }
+.seg button[aria-pressed="true"][data-s="partial"] { background: var(--partial); border-color: var(--partial); color: var(--surface); }
+.seg button[aria-pressed="true"][data-s="broken"] { background: var(--broken); border-color: var(--broken); color: var(--surface); }
+.seg button[aria-pressed="true"][data-s="na"] { background: var(--na); border-color: var(--na); color: var(--surface); }
+.envnotes label { display: flex; flex-direction: column; gap: 4px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.savebar { position: sticky; bottom: 0; z-index: 3; margin-top: 4px; background: var(--surface); border-top: 1px solid var(--line);
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.savebar .msg { flex: 1 1 260px; color: var(--muted); min-width: 0; }
+.savebar .msg.dirty { color: var(--partial); font-weight: 600; }
+.btn { font: inherit; font-weight: 600; border-radius: 6px; padding: 7px 14px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.notice { border: 1px solid var(--partial); background: var(--partial-bg); border-radius: 8px; padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+#md-out { width: 100%; min-height: 160px; font-family: var(--font-mono); font-size: 0.8rem; }
+@media (prefers-reduced-motion: no-preference) { td.cell { transition: background-color 0.15s ease; } }
+</style><main id="root"></main><script type="application/json" id="results">{"savedAt":"2026-10-15T10:58:51.526Z","envs":{"gnome":{"meta":{"distro":"Ubuntu 26.04.1","desktop":"50","session":"Wayland","portal":"","extras":""},"cells":{"win|A":{"s":"works","n":""},"win|B":{"s":"partial","n":"generic icon, cannot be pinned"},"win|C":{"s":"works","n":""},"win|D":{"s":"partial","n":"generic icon, cannot be pinned"},"fdo|A":{"s":"works","n":""},"fdo|B":{"s":"partial","n":"generic icon, ID instead of app name, raise on click"},"fdo|C":{"s":"works","n":""},"fdo|D":{"s":"partial","n":"generic icon, ID instead of app name, raise on click"},"fdochild|A":{"s":"works","n":""},"fdochild|B":{"s":"partial","n":"generic icon, actual name, does not raise on click"},"fdochild|C":{"s":"partial","n":"generic icon, actual name, does not raise on click"},"fdochild|D":{"s":"partial","n":"generic icon, actual name, does not raise on click"},"gnotif|A":{"s":"works","n":""},"gnotif|B":{"s":"broken","n":"No notification"},"gnotif|C":{"s":"broken","n":"No notification"},"gnotif|D":{"s":"broken","n":"No notification"},"clickaction|A":{"s":"works","n":""},"clickaction|B":{"s":"partial","n":"generic icon, ID instead of name, raise on click"},"clickaction|C":{"s":"works","n":""},"clickaction|D":{"s":"partial","n":"generic icon, ID instead of app name, raise on click"},"badge|A":{"s":"works","n":""},"badge|B":{"s":"broken","n":""},"badge|C":{"s":"broken","n":""},"badge|D":{"s":"broken","n":""},"rtscheme|A":{"s":"works","n":""},"rtscheme|B":{"s":"broken","n":""},"rtscheme|C":{"s":"broken","n":""},"rtscheme|D":{"s":"broken","n":""},"staticscheme|A":{"s":"works","n":""},"staticscheme|B":{"s":"works","n":""},"staticscheme|C":{"s":"works","n":""},"staticscheme|D":{"s":"works","n":""},"portal|A":{"s":"works","n":""},"portal|B":{"s":"broken","n":""},"portal|C":{"s":"broken","n":""},"portal|D":{"s":"broken","n":""},"mpris|A":{"s":"works","n":""},"mpris|B":{"s":"partial","n":"generic icon, actual name, click sends a new notification which raises on click"},"mpris|C":{"s":"partial","n":"generic icon, actual name, click sends a new notification which raises on click"},"mpris|D":{"s":"partial","n":"generic icon, actual name, click sends a new notification which raises on click"}},"notes":""},"kde":{"meta":{"distro":"","desktop":"","session":"","portal":"","extras":""},"cells":{"win|A":{"s":"","n":""},"win|B":{"s":"","n":""},"win|C":{"s":"","n":""},"win|D":{"s":"","n":""},"fdo|A":{"s":"","n":""},"fdo|B":{"s":"","n":""},"fdo|C":{"s":"","n":""},"fdo|D":{"s":"","n":""},"fdochild|A":{"s":"","n":""},"fdochild|B":{"s":"","n":""},"fdochild|C":{"s":"","n":""},"fdochild|D":{"s":"","n":""},"gnotif|A":{"s":"","n":""},"gnotif|B":{"s":"","n":""},"gnotif|C":{"s":"","n":""},"gnotif|D":{"s":"","n":""},"clickaction|A":{"s":"","n":""},"clickaction|B":{"s":"","n":""},"clickaction|C":{"s":"","n":""},"clickaction|D":{"s":"","n":""},"badge|A":{"s":"","n":""},"badge|B":{"s":"","n":""},"badge|C":{"s":"","n":""},"badge|D":{"s":"","n":""},"rtscheme|A":{"s":"","n":""},"rtscheme|B":{"s":"","n":""},"rtscheme|C":{"s":"","n":""},"rtscheme|D":{"s":"","n":""},"staticscheme|A":{"s":"","n":""},"staticscheme|B":{"s":"","n":""},"staticscheme|C":{"s":"","n":""},"staticscheme|D":{"s":"","n":""},"portal|A":{"s":"","n":""},"portal|B":{"s":"","n":""},"portal|C":{"s":"","n":""},"portal|D":{"s":"","n":""},"mpris|A":{"s":"","n":""},"mpris|B":{"s":"","n":""},"mpris|C":{"s":"","n":""},"mpris|D":{"s":"","n":""}},"notes":""},"noctalia":{"meta":{"distro":"Ubuntu 26.04.1","desktop":"","session":"Wayland","portal":"","extras":""},"cells":{"win|A":{"s":"works","n":""},"win|B":{"s":"works","n":""},"win|C":{"s":"works","n":""},"win|D":{"s":"works","n":""},"fdo|A":{"s":"partial","n":"no icon, unclickable"},"fdo|B":{"s":"partial","n":"no icon, unclickable"},"fdo|C":{"s":"partial","n":"no icon, unclickable"},"fdo|D":{"s":"partial","n":"no icon, unclickable"},"fdochild|A":{"s":"partial","n":"no icon, unclickable"},"fdochild|B":{"s":"partial","n":"no icon, unclickable"},"fdochild|C":{"s":"partial","n":"no icon, unclickable"},"fdochild|D":{"s":"partial","n":"no icon, unclickable"},"gnotif|A":{"s":"partial","n":"no icon, unclickable"},"gnotif|B":{"s":"partial","n":"no icon, unclickable"},"gnotif|C":{"s":"partial","n":"no icon, unclickable"},"gnotif|D":{"s":"partial","n":"no icon, unclickable"},"clickaction|A":{"s":"partial","n":"No icon, raise on click"},"clickaction|B":{"s":"partial","n":"No icon, raise on click"},"clickaction|C":{"s":"partial","n":"No icon, raise on click"},"clickaction|D":{"s":"partial","n":"No icon, raise on click"},"badge|A":{"s":"na","n":"unsupported"},"badge|B":{"s":"na","n":"unsupported"},"badge|C":{"s":"na","n":"unsupported"},"badge|D":{"s":"na","n":"unsupported"},"rtscheme|A":{"s":"works","n":""},"rtscheme|B":{"s":"broken","n":""},"rtscheme|C":{"s":"broken","n":""},"rtscheme|D":{"s":"broken","n":""},"staticscheme|A":{"s":"works","n":""},"staticscheme|B":{"s":"works","n":""},"staticscheme|C":{"s":"works","n":""},"staticscheme|D":{"s":"works","n":""},"portal|A":{"s":"works","n":""},"portal|B":{"s":"broken","n":""},"portal|C":{"s":"broken","n":""},"portal|D":{"s":"broken","n":""},"mpris|A":{"s":"partial","n":"no icon, no option to raise, receives events"},"mpris|B":{"s":"partial","n":"no icon, no option to raise, receives events"},"mpris|C":{"s":"partial","n":"no icon, no option to raise, receives events"},"mpris|D":{"s":"partial","n":"no icon, no option to raise, receives events"}},"notes":""}}}</script><script id="app">
+(function () {
+  "use strict";
+  var TITLE = "Desktop ID Probe Results";
+  var FONT_LINK = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@600;700&family=Red+Hat+Mono:wght@400;500&family=Red+Hat+Text:wght@400;500;600&display=swap">';
+  var FALLBACK_RESET = ":root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}";
+  var DRAFT_KEY = "dtprobe-results-draft";
+
+  var COLS = [
+    { id: "A", label: "A: original name", cmd: 'install "$AppimagePath"' },
+    { id: "B", label: "B: renamed", cmd: 'install "$AppimagePath" --as dtprobe-renamed' },
+    { id: "C", label: "C: renamed + StartupWMClass", cmd: 'install "$AppimagePath" --as dtprobe-renamed --wmclass' },
+    { id: "D", label: "D: in a subdirectory", cmd: 'install "$AppimagePath" --subdir appimages' }
+  ];
+  var ROWS = [
+    { id: "win", label: "1 · Window ↔ launcher", hint: "Pin it, launch from the app grid. One dock entry? Real icon on the running window and in Alt-Tab?" },
+    { id: "fdo", label: "2 · Notification, this process", hint: "Icon and app name on the popup." },
+    { id: "fdochild", label: "2 · Notification, child process", hint: "No window owns the sender, so only the desktop-entry hint identifies the app." },
+    { id: "gnotif", label: "2b · GNotification", hint: "Does it appear at all? With what name and icon?" },
+    { id: "clickaction", label: "2c · Notification with click action", hint: "Sends a default action. Cover the probe window, click the notification: does the probe come to the front?" },
+    { id: "badge", label: "3 · Badge + progress", hint: "Press Badge +1 a few times, watch the dock icon." },
+    { id: "rtscheme", label: "4 · dtprobe:// at runtime", hint: "Register → Am I default? → Open dtprobe://hello." },
+    { id: "staticscheme", label: "4 · dtprobe-static://", hint: "Declared in the file. Control row: should work everywhere." },
+    { id: "portal", label: "5 · Portal Register", hint: "Needs xdg-desktop-portal 1.19.1 or newer." },
+    { id: "mpris", label: "6 · MPRIS media widget", hint: "Icon and name in the media widget. Does Raise focus the window?" }
+  ];
+  var STATUSES = [["works", "Works"], ["partial", "Partial"], ["broken", "Broken"], ["na", "N/A"]];
+  var META = [["distro", "Distro + version"], ["desktop", "Desktop / shell version"], ["session", "Session (Wayland / X11)"], ["portal", "xdg-desktop-portal version"], ["extras", "Dock / extensions"]];
+
+  // Predictions per row: [A, B, C, D]. A leading "?" marks ones not confirmed from source.
+  var GLIB_RT = ["Registered / YES / Received URI", "FAIL / NO / no handler", "FAIL / NO / no handler", "FAIL / NO / no handler"];
+  var STATIC_OK = ["Works", "Works", "Works", "Works"];
+  var PORTAL = ["Accepted", "Refused: App info not found", "Refused: App info not found", "Refused: App info not found"];
+  var ENVS = [
+    {
+      id: "gnome", name: "GNOME",
+      note: "GNOME matches the window to a desktop file by exact ID, then StartupWMClass. A subdirectory only matches when it is named gnome, fedora, mozilla or debian, so also try --subdir gnome as a control. Badges need Ubuntu Dock, Dash to Dock or Dash to Panel; stock GNOME shows none.",
+      pred: {
+        win: ["One dock entry, real icon", "Generic icon, second dock entry", "Same as A", "Same as B"],
+        fdo: ["Icon + app name", "Generic", "Icon + app name (matched by window PID)", "Generic"],
+        fdochild: ["Icon + app name", "Generic", "Generic", "Generic"],
+        gnotif: ["Shows", "Never appears", "Never appears", "Never appears"],
+        clickaction: ["?Clicking raises the probe", "?Clicking raises the probe", "?Clicking raises the probe", "?Clicking raises the probe"],
+        badge: ["Shows (with a dock extension)", "Nothing", "Nothing", "Nothing"],
+        rtscheme: GLIB_RT, staticscheme: STATIC_OK, portal: PORTAL,
+        mpris: ["Icon + name, Raise focuses", "?Generic icon", "?Generic icon", "?Generic icon"]
+      }
+    },
+    {
+      id: "noctalia", name: "Noctalia + niri",
+      note: "Noctalia (the current native C++ shell) matches by ID, StartupWMClass, ID with dots and dashes removed, Name=, then shared name tokens of 4+ letters; it ignores subdirectories and skips NoDisplay entries. Real renames such as appimagekit_<hash>-Obsidian usually still match by token; try --as appimagekit_0123abcd-DesktopIdProbe to see that. It has no LauncherEntry support. Three things don't depend on the desktop file at all: notification icons come only from the notification itself (the probe sends none), a notification is clickable only when it has a default action (test 2c sends one), and the media widget shows album art and never calls MPRIS Raise. With launch_apps_as_systemd_services on, apps run as app-<file name>@….service; for a --subdir install that drops the prefix, so the portal finds no desktop file.",
+      pred: {
+        win: ["One dock entry, real icon", "?Unmatched: separate entry", "Same as A (StartupWMClass)", "Same as A (subdirectory ignored)"],
+        fdo: ["Icon + app name", "?Name via Name= match; icon unclear", "?Same as A (StartupWMClass)", "?Same as A"],
+        fdochild: ["Icon + app name", "?Name via Name= match; icon unclear", "?Same as A", "?Same as A"],
+        gnotif: ["?Sent as a plain notification", "?Raw ID as app name", "?Same as A", "?Same as A"],
+        clickaction: ["Clickable; raises the probe", "Clickable; raises the probe", "Clickable; raises the probe", "Clickable; raises the probe"],
+        badge: ["Not supported", "Not supported", "Not supported", "Not supported"],
+        rtscheme: GLIB_RT, staticscheme: STATIC_OK, portal: PORTAL,
+        mpris: ["?Player shown with icon", "?Unknown", "?Unknown", "?Unknown"]
+      }
+    },
+    {
+      id: "kde", name: "KDE Plasma",
+      note: "Plasma matches windows by StartupWMClass, then the bare file name (ignoring subdirectories), then Name=, then the .desktop file inside the running AppImage. Plasma launches apps as app-<file ID>@….service, so the portal ID in the identity panel follows the installed name.",
+      pred: {
+        win: ["One entry, real icon", "?Icon from the AppImage's own file; may not merge with the pin", "Same as A", "?Same as A (bare file name match)"],
+        fdo: ["Icon + app name", "?Generic", "?Generic (no PID matching)", "?Icon + app name (bare name lookup)"],
+        fdochild: ["Icon + app name", "?Generic", "?Generic", "?Icon + app name"],
+        gnotif: ["?Sent as a plain notification; compare with row 2", "?Like row 2", "?Like row 2", "?Like row 2"],
+        clickaction: ["?Clicking raises the probe", "?Clicking raises the probe", "?Clicking raises the probe", "?Clicking raises the probe"],
+        badge: ["Shows on the task manager", "?Nothing", "?Nothing", "?Unknown"],
+        rtscheme: GLIB_RT, staticscheme: STATIC_OK, portal: PORTAL,
+        mpris: ["Icon + name, Raise focuses", "?Generic icon", "?Generic icon", "?Icon + name"]
+      }
+    }
+  ];
+
+  // ---------- state ----------
+  function emptyEnv() {
+    var e = { meta: {}, cells: {}, notes: "" };
+    META.forEach(function (m) { e.meta[m[0]] = ""; });
+    return e;
+  }
+  function normalize(raw) {
+    var s = { savedAt: raw && raw.savedAt || null, envs: {} };
+    ENVS.forEach(function (env) {
+      var src = raw && raw.envs && raw.envs[env.id] || {};
+      var e = emptyEnv();
+      META.forEach(function (m) { e.meta[m[0]] = String(src.meta && src.meta[m[0]] || ""); });
+      e.notes = String(src.notes || "");
+      ROWS.forEach(function (r) {
+        COLS.forEach(function (c) {
+          var k = r.id + "|" + c.id, v = src.cells && src.cells[k] || {};
+          e.cells[k] = { s: STATUSES.some(function (x) { return x[0] === v.s; }) ? v.s : "", n: String(v.n || "") };
+        });
+      });
+      s.envs[env.id] = e;
+    });
+    return s;
+  }
+  var stored = {};
+  try { stored = JSON.parse(document.getElementById("results").textContent || "{}"); } catch (err) { stored = {}; }
+  var state = normalize(stored);
+  var dirty = false, readOnly = false, saving = false, artifactNs = null, capabilityKnown = false;
+  // No Claude viewer around this page, e.g. when it is hosted on GitHub Pages.
+  var standalone = !(window.claude && typeof window.claude.use === "function");
+
+  function readDraft() { try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch (e) { return null; } }
+  function writeDraft() { try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ basis: state.savedAt, data: state })); } catch (e) {} }
+  function clearDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} }
+
+  var staleDraft = null;
+  var draft = readDraft();
+  if (draft && draft.data) {
+    if (draft.basis === state.savedAt) { state = normalize(draft.data); state.savedAt = draft.basis; dirty = true; }
+    else { staleDraft = draft; }
+  }
+
+  // ---------- rendering ----------
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (ch) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]; }); }
+  function counts(envId) {
+    var n = 0, total = 0, cells = state.envs[envId].cells;
+    Object.keys(cells).forEach(function (k) { total++; if (cells[k].s) n++; });
+    return n + "/" + total + " recorded";
+  }
+  function predHtml(text) {
+    var unsure = text.charAt(0) === "?";
+    var t = unsure ? text.slice(1) : text;
+    return '<div class="pred">Predicted: ' + esc(t) + (unsure ? '<span class="unsure" title="Not confirmed from source">unverified</span>' : "") + "</div>";
+  }
+  function cellHtml(env, row, col) {
+    var k = row.id + "|" + col.id, cell = state.envs[env.id].cells[k];
+    var base = env.id + "-" + row.id + "-" + col.id;
+    var seg = STATUSES.map(function (st) {
+      return '<button type="button" id="' + base + "-" + st[0] + '" data-env="' + env.id + '" data-key="' + k + '" data-s="' + st[0] + '" aria-pressed="' + (cell.s === st[0]) + '">' + st[1] + "</button>";
+    }).join("");
+    return '<td class="cell" data-s="' + esc(cell.s) + '" id="' + base + '"><div class="cellbox">' + predHtml(env.pred[row.id][COLS.indexOf(col)]) +
+      '<div class="seg" role="group" aria-label="' + esc(env.name + ", " + row.label + ", " + col.label) + '">' + seg + "</div>" +
+      '<textarea id="' + base + '-notes" rows="1" placeholder="What you saw" data-env="' + env.id + '" data-key="' + k + '" data-field="cellnote" aria-label="Notes: ' + esc(row.label + ", " + col.label) + '">' + esc(cell.n) + "</textarea></div></td>";
+  }
+  function envHtml(env) {
+    var e = state.envs[env.id];
+    var meta = META.map(function (m) {
+      return '<label for="' + env.id + "-meta-" + m[0] + '">' + esc(m[1]) + '<input type="text" id="' + env.id + "-meta-" + m[0] + '" data-env="' + env.id + '" data-field="meta" data-meta="' + m[0] + '" value="' + esc(e.meta[m[0]]) + '"></label>';
+    }).join("");
+    var head = "<tr><th>Test</th>" + COLS.map(function (c) { return "<th>" + esc(c.label) + '<span class="sub mono">' + esc(c.cmd) + "</span></th>"; }).join("") + "</tr>";
+    var body = ROWS.map(function (r) {
+      return '<tr><th scope="row">' + esc(r.label) + '<span class="hint">' + esc(r.hint) + "</span></th>" + COLS.map(function (c) { return cellHtml(env, r, c); }).join("") + "</tr>";
+    }).join("");
+    return '<section class="env" id="' + env.id + '"><div class="envhead"><h2>' + esc(env.name) + '</h2><span class="count" data-count="' + env.id + '">' + counts(env.id) + "</span></div>" +
+      '<p class="envnote">' + esc(env.note) + "</p>" +
+      '<div class="meta">' + meta + "</div>" +
+      '<div class="tablewrap"><table><thead>' + head + "</thead><tbody>" + body + "</tbody></table></div>" +
+      '<div class="envnotes"><label for="' + env.id + '-notes">Other observations<textarea id="' + env.id + '-notes" rows="2" data-env="' + env.id + '" data-field="envnote">' + esc(e.notes) + "</textarea></label></div></section>";
+  }
+  function render() {
+    var root = document.getElementById("root");
+    var nav = ENVS.map(function (env) { return '<a href="#' + env.id + '">' + esc(env.name) + ' <span class="count" data-count="' + env.id + '">' + counts(env.id) + "</span></a>"; }).join("");
+    var modes = COLS.map(function (c) { return '<div class="mode"><span class="tag">' + c.id + "</span><b>" + esc(c.label.slice(3)) + "</b><code>./dtprobe-integrate.sh " + esc(c.cmd) + "</code></div>"; }).join("");
+    root.innerHTML =
+      '<header class="intro"><h1>' + esc(TITLE) + "</h1>" +
+      '<p class="lede">One grid per desktop: each test from the probe against each way of installing its .desktop file. Each cell shows what the source code predicts; record what you actually see. <code>$AppimagePath</code> is the full path to the AppImage. Run <code>./dtprobe-integrate.sh uninstall</code> and quit the probe between columns.</p></header>' +
+      '<div class="modes">' + modes + "</div>" +
+      '<div id="stale" hidden class="notice"><span>This browser has unsaved edits from before the last save.</span><button type="button" class="btn" id="restore-draft">Restore them</button><button type="button" class="btn" id="discard-draft">Discard</button></div>' +
+      '<nav class="envnav" aria-label="Desktops">' + nav + "</nav>" +
+      ENVS.map(envHtml).join("") +
+      '<textarea id="md-out" hidden readonly aria-label="Exported results"></textarea>' +
+      '<div class="savebar"><span class="msg" id="save-msg" role="status"></span><button type="button" class="btn" id="copy-json">Copy JSON</button><button type="button" class="btn" id="download-json" hidden>Download JSON</button><button type="button" class="btn" id="copy-md">Copy as Markdown</button><button type="button" class="btn primary" id="save">Save results</button></div>';
+    document.getElementById("stale").hidden = !staleDraft;
+    root.querySelectorAll("textarea").forEach(autosize);
+    updateSaveBar();
+  }
+  function autosize(t) { if (t.id === "md-out") return; t.style.height = "auto"; t.style.height = Math.max(32, t.scrollHeight + 2) + "px"; }
+  function updateCounts(envId) { document.querySelectorAll('[data-count="' + envId + '"]').forEach(function (el) { el.textContent = counts(envId); }); }
+  function updateSaveBar(message) {
+    var msg = document.getElementById("save-msg"), btn = document.getElementById("save");
+    if (!msg) return;
+    msg.classList.toggle("dirty", dirty && !message);
+    if (message) msg.textContent = message;
+    else if (readOnly) msg.textContent = "This view is read-only, so results can't be saved here. Copy them as Markdown instead.";
+    else if (dirty) msg.textContent = "Unsaved changes (kept in this browser until you save).";
+    else if (state.savedAt) msg.textContent = "Saved " + new Date(state.savedAt).toLocaleString() + ".";
+    else msg.textContent = "Nothing recorded yet.";
+    btn.disabled = saving || readOnly || !dirty || (capabilityKnown && !artifactNs);
+    if (standalone && !message) msg.textContent = dirty ? "Edits are kept in this browser only. Use Download JSON to keep them." : "Edits you make are kept in this browser only. Use Download JSON to keep them.";
+    else if (capabilityKnown && !artifactNs && !message) msg.textContent = "Saving isn't available in this view. Copy your results as Markdown to keep them.";
+  }
+  function markDirty() { dirty = true; writeDraft(); updateSaveBar(); }
+
+  // ---------- events ----------
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest("button");
+    if (!b) return;
+    if (b.dataset.s && b.dataset.key) {
+      var cell = state.envs[b.dataset.env].cells[b.dataset.key];
+      cell.s = cell.s === b.dataset.s ? "" : b.dataset.s;
+      var td = b.closest("td");
+      td.dataset.s = cell.s;
+      td.querySelectorAll(".seg button").forEach(function (x) { x.setAttribute("aria-pressed", String(x.dataset.s === cell.s)); });
+      updateCounts(b.dataset.env);
+      markDirty();
+    } else if (b.id === "save") { save(); }
+    else if (b.id === "copy-md") { copyText(toMarkdown(), "Markdown"); }
+    else if (b.id === "copy-json") { copyText(exportJson(), "JSON"); }
+    else if (b.id === "download-json") { downloadJson(); }
+    else if (b.id === "restore-draft" && staleDraft) {
+      var basis = state.savedAt;
+      state = normalize(staleDraft.data); state.savedAt = basis; staleDraft = null;
+      render(); markDirty();
+    } else if (b.id === "discard-draft") { staleDraft = null; clearDraft(); document.getElementById("stale").hidden = true; }
+  });
+  document.addEventListener("input", function (ev) {
+    var t = ev.target, env = t.dataset && t.dataset.env;
+    if (!env) return;
+    if (t.dataset.field === "meta") state.envs[env].meta[t.dataset.meta] = t.value;
+    else if (t.dataset.field === "cellnote") state.envs[env].cells[t.dataset.key].n = t.value;
+    else if (t.dataset.field === "envnote") state.envs[env].notes = t.value;
+    else return;
+    if (t.tagName === "TEXTAREA") autosize(t);
+    markDirty();
+  });
+
+  // ---------- markdown ----------
+  function mdCell(s) { return String(s).replace(/\|/g, "\\|").replace(/\n+/g, " ").trim(); }
+  function toMarkdown() {
+    var label = { works: "✅", partial: "🟡", broken: "❌", na: "➖" };
+    var out = ["# " + TITLE, "", "✅ works · 🟡 partly works · ❌ broken · ➖ not applicable · · not tested", ""];
+    ENVS.forEach(function (env) {
+      var e = state.envs[env.id];
+      out.push("## " + env.name, "");
+      META.forEach(function (m) { if (e.meta[m[0]]) out.push("- " + m[1] + ": " + mdCell(e.meta[m[0]])); });
+      out.push("", "| Test | " + COLS.map(function (c) { return c.label; }).join(" | ") + " |", "|---|" + COLS.map(function () { return "---"; }).join("|") + "|");
+      ROWS.forEach(function (r) {
+        out.push("| " + r.label + " | " + COLS.map(function (c) {
+          var cell = e.cells[r.id + "|" + c.id];
+          var txt = cell.s ? label[cell.s] : "·";
+          return mdCell(txt + (cell.n ? " " + cell.n : ""));
+        }).join(" | ") + " |");
+      });
+      if (e.notes) out.push("", mdCell(e.notes));
+      out.push("");
+    });
+    return out.join("\n");
+  }
+  function copyText(text, what) {
+    var box = document.getElementById("md-out");
+    function fallback() {
+      box.value = text; box.hidden = false; box.focus(); box.select();
+      updateSaveBar("Couldn't reach the clipboard. The " + what + " is selected below; copy it with Ctrl+C.");
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () { box.hidden = true; updateSaveBar("Copied as " + what + "."); }, fallback);
+    } catch (e) { fallback(); }
+  }
+
+  // ---------- json ----------
+  // Exactly what the page stores, including edits not saved yet.
+  function exportJson() { return JSON.stringify(state, null, 2) + "\n"; }
+  var downloadsNs = null;
+  function downloadJson() {
+    if (standalone) {
+      var url = URL.createObjectURL(new Blob([exportJson()], { type: "application/json" }));
+      var a = document.createElement("a");
+      a.href = url; a.download = "results.json"; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      updateSaveBar("Downloaded results.json.");
+      return;
+    }
+    if (!downloadsNs) return;
+    downloadsNs.save({ filename: "results.json", data: exportJson() }).then(function () {
+      updateSaveBar("Downloaded results.json.");
+    }, function (err) {
+      var code = err && err.code;
+      if (code === "declined") updateSaveBar("Download cancelled.");
+      else if (code === "rate_limited") updateSaveBar("A download prompt is already open. Finish that one first.");
+      else { document.getElementById("download-json").hidden = true; updateSaveBar("Downloads aren't available here. Use Copy JSON instead."); }
+    });
+  }
+
+  // ---------- saving ----------
+  function skeletonReset() {
+    var st = document.head && document.head.querySelector("style");
+    var txt = st && st.textContent || "";
+    return txt.indexOf("safe-area-inset") >= 0 ? txt : FALLBACK_RESET;
+  }
+  function buildDocument() {
+    var SC = "<" + "/script>";
+    var json = JSON.stringify(state).replace(/</g, "\\u003c");
+    return "<!doctype html><html><head><meta charset=utf8><meta name=viewport content=\"width=device-width,initial-scale=1,viewport-fit=cover\"><style>" + skeletonReset() + "</style></head><body>" +
+      "<title>" + TITLE + "</title><meta name=\"claude:viewport-fit-sides\" content=\"cover\">" + FONT_LINK +
+      "<style id=\"css\">" + document.getElementById("css").textContent + "</style><main id=\"root\"></main>" +
+      "<script type=\"application/json\" id=\"results\">" + json + SC +
+      "<script id=\"app\">" + document.getElementById("app").textContent + SC + "</body></html>";
+  }
+  function save() {
+    if (!artifactNs || saving || !dirty) return;
+    var prev = state.savedAt;
+    state.savedAt = new Date().toISOString();
+    var html = buildDocument();
+    saving = true; updateSaveBar("Saving…");
+    artifactNs.publish(html).then(function () {
+      clearDraft(); dirty = false; saving = false;
+      updateSaveBar("Saved. Reloading to the new version…");
+    }, function (err) {
+      saving = false; state.savedAt = prev;
+      var code = err && err.code;
+      if (code === "conflict") { updateSaveBar("Someone saved a newer version. Reloading to it; your edits stay in this browser and you can restore them."); }
+      else if (["not_writer", "not_granted", "not_declared", "capability_disabled", "capability_removed", "consent_required"].indexOf(code) >= 0) { readOnly = true; updateSaveBar(); }
+      else if (code === "rate_limited") { updateSaveBar("Saved too often. Wait a minute, then save again."); }
+      else if (code === "too_large") { updateSaveBar("The notes are too long to save. Shorten some, then save again."); }
+      else { updateSaveBar("Couldn't save (" + (code || "unknown error") + "). Your edits are kept in this browser; try again."); }
+      writeDraft();
+    });
+  }
+
+  render();
+  if (window.claude && typeof window.claude.use === "function") {
+    window.claude.use("downloads").then(function (ns) {
+      downloadsNs = ns;
+      document.getElementById("download-json").hidden = !ns;
+    }, function () {});
+    window.claude.use("artifact").then(function (ns) { artifactNs = ns; capabilityKnown = true; updateSaveBar(); }, function () { capabilityKnown = true; updateSaveBar(); });
+  } else {
+    capabilityKnown = true;
+    document.getElementById("save").hidden = true;
+    document.getElementById("download-json").hidden = false;
+    updateSaveBar();
+  }
+})();
+</script>
+</body></html>

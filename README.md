@@ -20,22 +20,23 @@ and one button per feature that looks the app up by that ID. Install its
 ## Results so far
 
 See [RESULTS.md](RESULTS.md) for GNOME and Noctalia + niri; KDE Plasma is not tested yet.
+The interactive results page is `docs/index.html` (see [Recording results](#recording-results)).
 
 ## Setup
 
-`$AI` below is just a shell variable holding the absolute path to the AppImage.
+`$AppimagePath` below is just a shell variable holding the absolute path to the AppImage.
 The installed desktop file's `Exec=` points at that path, so don't move the
 AppImage afterwards.
 
 ```sh
 cd desktop-id-probe
 chmod +x dist/Desktop_ID_Probe-x86_64.AppImage dtprobe-integrate.sh
-AI=$PWD/dist/Desktop_ID_Probe-x86_64.AppImage   # use the aarch64 one on ARM
+AppimagePath=$PWD/dist/Desktop_ID_Probe-x86_64.AppImage   # use the aarch64 one on ARM
 
-./dtprobe-integrate.sh install "$AI"                                   # A: original name
-./dtprobe-integrate.sh install "$AI" --as dtprobe-renamed              # B: renamed
-./dtprobe-integrate.sh install "$AI" --as dtprobe-renamed --wmclass    # C: renamed + StartupWMClass
-./dtprobe-integrate.sh install "$AI" --subdir appimages                # D: original name, in applications/appimages/
+./dtprobe-integrate.sh install "$AppimagePath"                                   # A: original name
+./dtprobe-integrate.sh install "$AppimagePath" --as dtprobe-renamed              # B: renamed
+./dtprobe-integrate.sh install "$AppimagePath" --as dtprobe-renamed --wmclass    # C: renamed + StartupWMClass
+./dtprobe-integrate.sh install "$AppimagePath" --subdir appimages                # D: original name, in applications/appimages/
 ./dtprobe-integrate.sh uninstall                                       # between runs
 ```
 
@@ -107,7 +108,7 @@ There are two exceptions:
 
 ## Extra experiments
 
-- **Hidden alias:** install C, then `install "$AI" --hidden`, which adds the
+- **Hidden alias:** install C, then `install "$AppimagePath" --hidden`, which adds the
   original name with `NoDisplay=true`. Rows 2b, 4, 5 and 6 should pass. Badges
   should still not reach the pinned launcher.
 - **`--rename-icon`:** installs the icon under the new name as well, like
@@ -123,8 +124,11 @@ builds `dist/` for x86_64 and aarch64. The app itself is
 
 ## Recording results
 
-Fill in the results page, then press **Download JSON** (or **Copy JSON**) and
-save it over `results/results.json`. Regenerate the tables with:
+`docs/index.html` is the results page. Serve it with GitHub Pages (Settings →
+Pages → deploy from the `main` branch, `/docs` folder) or open it locally.
+Outside Claude it can't save into the page itself: your edits stay in that
+browser's local storage until you clear site data. Press **Download JSON** and
+save it over `results/results.json` to keep them. Regenerate the tables with:
 
 ```sh
 python3 tools/render_results.py

@@ -20,12 +20,12 @@ ANN = SRC.with_name("annotations.json")
 STATUS = {"works": "✅", "partial": "🟡", "broken": "❌", "na": "➖", "": "·"}
 LEGEND = "✅ works · 🟡 partly works · ❌ broken · ➖ not applicable · · not tested"
 
-ENVS = [("gnome", "GNOME", "GNOME"), ("kde", "KDE Plasma", "KDE"), ("noctalia", "Noctalia + niri", "Noctalia")]
+ENVS = [("gnome", "GNOME", "GNOME"), ("noctalia", "Noctalia + niri", "Noctalia"), ("kde", "KDE Plasma", "KDE")]
 COLS = [
-    ("A", "A: original name", "install \"$AI\""),
-    ("B", "B: renamed", "install \"$AI\" --as dtprobe-renamed"),
-    ("C", "C: renamed + StartupWMClass", "install \"$AI\" --as dtprobe-renamed --wmclass"),
-    ("D", "D: in a subdirectory", "install \"$AI\" --subdir appimages"),
+    ("A", "A: original name", "install \"$AppimagePath\""),
+    ("B", "B: renamed", "install \"$AppimagePath\" --as dtprobe-renamed"),
+    ("C", "C: renamed + StartupWMClass", "install \"$AppimagePath\" --as dtprobe-renamed --wmclass"),
+    ("D", "D: in a subdirectory", "install \"$AppimagePath\" --subdir appimages"),
 ]
 ROWS = [
     ("win", "1 · Window ↔ launcher"),
