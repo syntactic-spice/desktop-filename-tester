@@ -28,6 +28,7 @@ ROWS = [
     ("fdo", "2 · Notification, this process"),
     ("fdochild", "2 · Notification, child process"),
     ("gnotif", "2b · GNotification"),
+    ("clickaction", "2c · Notification with click action"),
     ("badge", "3 · Badge + progress"),
     ("rtscheme", "4 · `dtprobe://` registered at runtime"),
     ("staticscheme", "4 · `dtprobe-static://` declared in file"),
@@ -92,6 +93,8 @@ def main():
         out.append("")
         if env.get("notes"):
             out += [md(env["notes"]), ""]
+        if env.get("analysis"):
+            out += ["> " + md(env["analysis"]), ""]
         for key, n in marks.items():
             out += [f"[^{eid}{n}]: {md(notes[key])}", ""]
 

@@ -68,6 +68,7 @@ xdg-desktop-portal source. That's what you're testing.
 | 2 | fdo notification (this process) | Icon + app name | GNOME: generic | Same as A on GNOME (matched by the window's PID) | GNOME: same as B |
 | 2 | fdo notification (child, no PID match) | Icon + app name | Generic | Generic | GNOME: generic |
 | 2b | GNotification | Shows | **GNOME: never appears.** Other desktops: falls back to fdo, like row 2 | Same as B | Same as B |
+| 2c | Notification with a click action (sends `default`; the probe raises itself with the server's activation token) | Clicking raises the probe | Same | Same | Same |
 | 3 | Badge + progress | Count/progress on the dock icon | Nothing | Nothing | Dash to Dock: nothing. Plasma: untested |
 | 4 | Register `dtprobe://` at runtime → "Am I default?" → Open | Registered / YES / "Received URI" | FAIL / NO / no handler | Same as B | Same as B |
 | 4 | Open `dtprobe-static://` (declared in the file) | Works | Works | Works | Works |

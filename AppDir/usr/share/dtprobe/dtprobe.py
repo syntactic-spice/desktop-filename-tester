@@ -162,13 +162,17 @@ def identity_report():
     return lines
 
 
-def send_fdo_notification(summary, body, with_hint=True):
-    """Plain org.freedesktop.Notifications call, as libnotify/Electron make it."""
+def send_fdo_notification(summary, body, with_hint=True, actions=()):
+    """Plain org.freedesktop.Notifications call, as libnotify/Electron make it.
+
+    No app_icon on purpose: the icon should come from the desktop file the
+    server matches, which is what's being tested.
+    """
     bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
     hints = {"desktop-entry": GLib.Variant("s", APP_ID)} if with_hint else {}
     reply = bus.call_sync(
         NOTIFY_BUS, NOTIFY_PATH, NOTIFY_BUS, "Notify",
-        GLib.Variant("(susssasa{sv}i)", (NAME, 0, "", summary, body, [], hints, -1)),
+        GLib.Variant("(susssasa{sv}i)", (NAME, 0, "", summary, body, list(actions), hints, -1)),
         GLib.VariantType("(u)"), Gio.DBusCallFlags.NONE, -1, None,
     )
     return reply.unpack()[0]
@@ -216,6 +220,8 @@ class Probe(Gtk.Application):
         self.mpris_owner_id = 0
         self.mpris_reg_ids = []
         self.mpris_playing = True
+        self.click_ids = {}  # notification id -> activation token (None until sent)
+        self.notify_sub = 0
 
     # ---- lifecycle -------------------------------------------------------
 
@@ -258,6 +264,7 @@ class Probe(Gtk.Application):
             ("2  fdo notification (this process)", self.on_fdo_notify),
             ("2  fdo notification (child, no PID match)", self.on_fdo_notify_child),
             ("2b GNotification (GApplication)", self.on_gnotification),
+            ("2c Notification with click action", self.on_click_notify),
             ("3  Badge +1 / progress", self.on_badge),
             ("3  Clear badge", self.on_badge_clear),
             (f"4  Register {RUNTIME_SCHEME}:// at runtime", self.on_register_scheme),
@@ -329,6 +336,40 @@ class Probe(Gtk.Application):
             GLib.PRIORITY_DEFAULT, proc.pid,
             lambda _pid, _status: self.log("Child process: " + " / ".join(proc.stdout.read().split("\n")).strip(" /")),
         )
+
+    def on_click_notify(self):
+        # Most real apps send a "default" action; servers such as Noctalia
+        # only make a notification clickable when it has one. On click the
+        # server emits ActivationToken, then ActionInvoked, and the app raises
+        # itself with that token.
+        if not self.notify_sub:
+            self.notify_sub = self.get_dbus_connection().signal_subscribe(
+                None, NOTIFY_BUS, None, NOTIFY_PATH, None,
+                Gio.DBusSignalFlags.NONE, self.on_notify_signal)
+        nid = send_fdo_notification(
+            "Notification with a click action",
+            "Cover or minimize the probe window, then click this notification.",
+            actions=["default", "Raise probe"],
+        )
+        self.click_ids[nid] = None
+        self.log(f"Sent notification #{nid} with a default action; click it to raise the probe")
+
+    def on_notify_signal(self, _conn, _sender, _path, _iface, signal, params):
+        args = params.unpack()
+        if not args or args[0] not in self.click_ids:
+            return
+        nid = args[0]
+        if signal == "ActivationToken":
+            self.click_ids[nid] = args[1]
+        elif signal == "ActionInvoked":
+            token = self.click_ids.get(nid)
+            self.log(f"Notification #{nid} clicked (action {args[1]!r}, activation token: "
+                     + ("yes" if token else "none") + "); raising the window")
+            if token:
+                self.window.set_startup_id(token)
+            self.window.present()
+        elif signal == "NotificationClosed":
+            self.click_ids.pop(nid, None)
 
     def on_gnotification(self):
         n = Gio.Notification.new("GNotification")
