@@ -1,4 +1,5 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><title>Desktop Filename Tester Results</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@600;700&family=Red+Hat+Mono:wght@400;500&family=Red+Hat+Text:wght@400;500;600&display=swap"><style id="css">
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Desktop Filename Tester Results</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@600;700&family=Red+Hat+Mono:wght@400;500&family=Red+Hat+Text:wght@400;500;600&display=swap"><style id="css">
 /* Layout: a lab results sheet. Header with the install modes, then one section per desktop: environment fields above a test x install-mode grid. A save bar sticks to the bottom. */
 :root {
   --bg: #f4f6f9;
@@ -59,6 +60,12 @@ nav.envnav a:hover { border-color: var(--accent); }
 nav.envnav .count { font-family: var(--font-mono); font-size: 0.82rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 section.env { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px; }
 .envhead { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; }
+.envname { font: inherit; font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--ink); background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 0 6px; margin-left: -7px; max-width: 100%; box-sizing: border-box; }
+.envname:hover { border-color: var(--line); }
+.envname:focus { border-color: var(--accent); background: var(--surface); outline: none; }
+textarea.envdesc { font: inherit; color: var(--muted); background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 6px; margin-left: -7px; max-width: 90ch; resize: none; }
+textarea.envdesc:hover { border-color: var(--line); }
+textarea.envdesc:focus { border-color: var(--accent); background: var(--surface); color: var(--ink); outline: none; }
 .envhead .count { font-family: var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .envnote { color: var(--muted); max-width: 90ch; }
 .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
@@ -188,7 +195,7 @@ td.cell[data-s="na"] { background: var(--na-bg); }
 
   // ---------- state ----------
   function emptyEnv() {
-    var e = { meta: {}, cells: {}, notes: "" };
+    var e = { meta: {}, cells: {}, notes: "", name: "", desc: "" };
     META.forEach(function (m) { e.meta[m[0]] = ""; });
     return e;
   }
@@ -199,6 +206,8 @@ td.cell[data-s="na"] { background: var(--na-bg); }
       var e = emptyEnv();
       META.forEach(function (m) { e.meta[m[0]] = String(src.meta && src.meta[m[0]] || ""); });
       e.notes = String(src.notes || "");
+      e.name = String(src.name || "");
+      e.desc = String(src.desc || "");
       ROWS.forEach(function (r) {
         COLS.forEach(function (c) {
           var k = r.id + "|" + c.id, v = src.cells && src.cells[k] || {};
@@ -229,6 +238,9 @@ td.cell[data-s="na"] { background: var(--na-bg); }
 
   // ---------- rendering ----------
   function esc(s) { return String(s).replace(/[&<>"']/g, function (ch) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]; }); }
+  // A section can be relabelled (e.g. to test another shell); predictions stay those of env.name.
+  function envName(env) { return state.envs[env.id].name || env.name; }
+  function envDesc(env) { return state.envs[env.id].desc || env.note; }
   function counts(envId) {
     var n = 0, total = 0, cells = state.envs[envId].cells;
     Object.keys(cells).forEach(function (k) { total++; if (cells[k].s) n++; });
@@ -246,7 +258,7 @@ td.cell[data-s="na"] { background: var(--na-bg); }
       return '<button type="button" id="' + base + "-" + st[0] + '" data-env="' + env.id + '" data-key="' + k + '" data-s="' + st[0] + '" aria-pressed="' + (cell.s === st[0]) + '">' + st[1] + "</button>";
     }).join("");
     return '<td class="cell" data-s="' + esc(cell.s) + '" id="' + base + '"><div class="cellbox">' + predHtml(env.pred[row.id][COLS.indexOf(col)]) +
-      '<div class="seg" role="group" aria-label="' + esc(env.name + ", " + row.label + ", " + col.label) + '">' + seg + "</div>" +
+      '<div class="seg" role="group" aria-label="' + esc(envName(env) + ", " + row.label + ", " + col.label) + '">' + seg + "</div>" +
       '<textarea id="' + base + '-notes" rows="1" placeholder="What you saw" data-env="' + env.id + '" data-key="' + k + '" data-field="cellnote" aria-label="Notes: ' + esc(row.label + ", " + col.label) + '">' + esc(cell.n) + "</textarea></div></td>";
   }
   function envHtml(env) {
@@ -258,16 +270,18 @@ td.cell[data-s="na"] { background: var(--na-bg); }
     var body = ROWS.map(function (r) {
       return '<tr><th scope="row">' + esc(r.label) + '<span class="hint">' + esc(r.hint) + "</span></th>" + COLS.map(function (c) { return cellHtml(env, r, c); }).join("") + "</tr>";
     }).join("");
-    return '<section class="env" id="' + env.id + '"><div class="envhead"><h2>' + esc(env.name) + '</h2><span class="count" data-count="' + env.id + '">' + counts(env.id) + "</span></div>" +
-      '<p class="envnote">' + esc(env.note) + "</p>" +
+    var shown = envName(env);
+    return '<section class="env" id="' + env.id + '"><div class="envhead"><h2><input class="envname" id="' + env.id + '-name" data-env="' + env.id + '" data-field="envname" value="' + esc(shown) + '" placeholder="' + esc(env.name) + '" size="' + Math.max(8, shown.length + 1) + '" aria-label="Desktop or shell name" title="Click to rename"></h2><span class="count" data-count="' + env.id + '">' + counts(env.id) + "</span></div>" +
+      '<p class="envnote" data-renamed="' + env.id + '"' + (shown === env.name ? " hidden" : "") + "><strong>Predictions below are for " + esc(env.name) + ".</strong></p>" +
+      '<textarea class="envdesc" id="' + env.id + '-desc" rows="2" data-env="' + env.id + '" data-field="envdesc" aria-label="Description" title="Click to edit">' + esc(envDesc(env)) + "</textarea>" +
       '<div class="meta">' + meta + "</div>" +
       '<div class="tablewrap"><table><thead>' + head + "</thead><tbody>" + body + "</tbody></table></div>" +
       '<div class="envnotes"><label for="' + env.id + '-notes">Other observations<textarea id="' + env.id + '-notes" rows="2" data-env="' + env.id + '" data-field="envnote">' + esc(e.notes) + "</textarea></label></div></section>";
   }
   function render() {
     var root = document.getElementById("root");
-    var nav = ENVS.map(function (env) { return '<a href="#' + env.id + '">' + esc(env.name) + ' <span class="count" data-count="' + env.id + '">' + counts(env.id) + "</span></a>"; }).join("");
-    var modes = COLS.map(function (c) { return '<div class="mode"><span class="tag">' + c.id + "</span><b>" + esc(c.label.slice(3)) + "</b><code class=\"cmds\"><span class=\"comment\"># Uninstall any existing installs</span>\n./dtprobe-integrate.sh uninstall\n./dtprobe-integrate.sh " + esc(c.cmd) + "</code></div>"; }).join("");
+    var nav = ENVS.map(function (env) { return '<a href="#' + env.id + '"><span data-name="' + env.id + '">' + esc(envName(env)) + '</span> <span class="count" data-count="' + env.id + '">' + counts(env.id) + "</span></a>"; }).join("");
+    var modes = COLS.map(function (c) { return '<div class="mode"><span class="tag">' + c.id + "</span><b>" + esc(c.label.slice(3)) + "</b><code class=\"cmds\"><span class=\"comment\"># uninstall any previous install</span>\n./dtprobe-integrate.sh uninstall\n./dtprobe-integrate.sh " + esc(c.cmd) + "</code></div>"; }).join("");
     root.innerHTML =
       '<header class="intro"><a class="repo" href="' + REPO + '">' + esc(REPO.replace("https://", "")) + "</a><h1>" + esc(TITLE) + "</h1>" + siblingLink() +
       '<p class="lede">One grid per desktop: each test from the probe against each way of installing its .desktop file. Each cell shows what the source code predicts; record what you actually see. <code>$AppimagePath</code> is the full path to the AppImage. Run <code>./dtprobe-integrate.sh uninstall</code> and quit the probe between columns.</p></header>' +
@@ -276,15 +290,15 @@ td.cell[data-s="na"] { background: var(--na-bg); }
       '<nav class="envnav" aria-label="Desktops">' + nav + "</nav>" +
       ENVS.map(envHtml).join("") +
       '<textarea id="md-out" hidden readonly aria-label="Exported results"></textarea>' +
-      '<div class="savebar"><span class="msg" id="save-msg" role="status"></span><button type="button" class="btn" id="copy-json">Copy JSON</button><button type="button" class="btn" id="download-json" hidden>Download JSON</button><button type="button" class="btn" id="copy-md">Copy as Markdown</button><button type="button" class="btn primary" id="save">Save results</button></div>';
+      '<div class="savebar"><span class="msg" id="save-msg" role="status"></span><button type="button" class="btn" id="copy-json">Copy JSON</button><button type="button" class="btn" id="download-json" hidden>Download JSON</button><button type="button" class="btn" id="download-html" hidden>Download HTML</button><button type="button" class="btn" id="copy-md">Copy as Markdown</button><button type="button" class="btn primary" id="save">Save results</button></div>';
     document.getElementById("stale").hidden = !staleDraft;
     root.querySelectorAll("textarea").forEach(autosize);
     updateSaveBar();
   }
   // The empty template and the filled-in results link to each other.
-  // Relative on GitHub Pages or a local copy; the Pages address inside Claude.
+  // Relative on GitHub Pages; the Pages address inside Claude and in a downloaded copy.
   function siblingLink() {
-    var base = standalone ? "" : PAGES;
+    var base = standalone && location.protocol !== "file:" ? "" : PAGES;
     return IS_TEMPLATE
       ? '<a class="sibling" href="' + base + 'index.html"><strong>My Results</strong></a>'
       : '<a class="sibling" href="' + base + 'template.html">Empty template</a>';
@@ -322,6 +336,7 @@ td.cell[data-s="na"] { background: var(--na-bg); }
     else if (b.id === "copy-md") { copyText(toMarkdown(), "Markdown"); }
     else if (b.id === "copy-json") { copyText(exportJson(), "JSON"); }
     else if (b.id === "download-json") { downloadJson(); }
+    else if (b.id === "download-html") { downloadHtml(); }
     else if (b.id === "restore-draft" && staleDraft) {
       var basis = state.savedAt;
       state = normalize(staleDraft.data); state.savedAt = basis; staleDraft = null;
@@ -334,6 +349,18 @@ td.cell[data-s="na"] { background: var(--na-bg); }
     if (t.dataset.field === "meta") state.envs[env].meta[t.dataset.meta] = t.value;
     else if (t.dataset.field === "cellnote") state.envs[env].cells[t.dataset.key].n = t.value;
     else if (t.dataset.field === "envnote") state.envs[env].notes = t.value;
+    else if (t.dataset.field === "envdesc") {
+      var defEnv = ENVS.filter(function (x) { return x.id === env; })[0];
+      state.envs[env].desc = t.value.trim() && t.value !== defEnv.note ? t.value : "";
+    }
+    else if (t.dataset.field === "envname") {
+      var def = ENVS.filter(function (x) { return x.id === env; })[0];
+      var v = t.value.trim();
+      state.envs[env].name = v && v !== def.name ? v : "";
+      t.size = Math.max(8, t.value.length + 1);
+      document.querySelectorAll('[data-name="' + env + '"]').forEach(function (el) { el.textContent = v || def.name; });
+      document.querySelector('[data-renamed="' + env + '"]').hidden = !state.envs[env].name;
+    }
     else return;
     if (t.tagName === "TEXTAREA") autosize(t);
     markDirty();
@@ -346,7 +373,8 @@ td.cell[data-s="na"] { background: var(--na-bg); }
     var out = ["# " + TITLE, "", "✅ works · 🟡 partly works · ❌ broken · ➖ not applicable · · not tested", ""];
     ENVS.forEach(function (env) {
       var e = state.envs[env.id];
-      out.push("## " + env.name, "");
+      out.push("## " + envName(env), "");
+      if (e.desc) out.push(mdCell(e.desc), "");
       META.forEach(function (m) { if (e.meta[m[0]]) out.push("- " + m[1] + ": " + mdCell(e.meta[m[0]])); });
       out.push("", "| Test | " + COLS.map(function (c) { return c.label; }).join(" | ") + " |", "|---|" + COLS.map(function () { return "---"; }).join("|") + "|");
       ROWS.forEach(function (r) {
@@ -376,24 +404,35 @@ td.cell[data-s="na"] { background: var(--na-bg); }
   // Exactly what the page stores, including edits not saved yet.
   function exportJson() { return JSON.stringify(state, null, 2) + "\n"; }
   var downloadsNs = null;
-  function downloadJson() {
+  function downloadJson() { saveFile("results.json", exportJson(), "application/json"); }
+  // The whole page with the current results built in, so the file works on its own.
+  function downloadHtml() {
+    var filled = JSON.parse(JSON.stringify(state));
+    filled.savedAt = new Date().toISOString();
+    saveFile("desktop-filename-tester-results.html", buildDocument(filled), "text/html");
+  }
+  function saveFile(filename, data, type) {
     if (standalone) {
-      var url = URL.createObjectURL(new Blob([exportJson()], { type: "application/json" }));
+      var url = URL.createObjectURL(new Blob([data], { type: type }));
       var a = document.createElement("a");
-      a.href = url; a.download = "results.json"; document.body.appendChild(a); a.click(); a.remove();
+      a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-      updateSaveBar("Downloaded results.json.");
+      updateSaveBar("Downloaded " + filename + ".");
       return;
     }
     if (!downloadsNs) return;
-    downloadsNs.save({ filename: "results.json", data: exportJson() }).then(function () {
-      updateSaveBar("Downloaded results.json.");
+    downloadsNs.save({ filename: filename, data: data }).then(function () {
+      updateSaveBar("Downloaded " + filename + ".");
     }, function (err) {
       var code = err && err.code;
       if (code === "declined") updateSaveBar("Download cancelled.");
       else if (code === "rate_limited") updateSaveBar("A download prompt is already open. Finish that one first.");
-      else { document.getElementById("download-json").hidden = true; updateSaveBar("Downloads aren't available here. Use Copy JSON instead."); }
+      else { showDownloads(false); updateSaveBar("Downloads aren't available here. Use Copy JSON instead."); }
     });
+  }
+  function showDownloads(on) {
+    document.getElementById("download-json").hidden = !on;
+    document.getElementById("download-html").hidden = !on;
   }
 
   // ---------- saving ----------
@@ -402,9 +441,9 @@ td.cell[data-s="na"] { background: var(--na-bg); }
     var txt = st && st.textContent || "";
     return txt.indexOf("safe-area-inset") >= 0 ? txt : FALLBACK_RESET;
   }
-  function buildDocument() {
+  function buildDocument(data) {
     var SC = "<" + "/script>";
-    var json = JSON.stringify(state).replace(/</g, "\\u003c");
+    var json = JSON.stringify(data || state).replace(/</g, "\\u003c");
     return "<!doctype html><html><head><meta charset=utf8><meta name=viewport content=\"width=device-width,initial-scale=1,viewport-fit=cover\"><style>" + skeletonReset() + "</style></head><body>" +
       "<title>" + TITLE + "</title><meta name=\"claude:viewport-fit-sides\" content=\"cover\">" + FONT_LINK +
       "<style id=\"css\">" + document.getElementById("css").textContent + "</style><main id=\"root\"></main>" +
@@ -436,14 +475,15 @@ td.cell[data-s="na"] { background: var(--na-bg); }
   if (window.claude && typeof window.claude.use === "function") {
     window.claude.use("downloads").then(function (ns) {
       downloadsNs = ns;
-      document.getElementById("download-json").hidden = !ns;
+      showDownloads(!!ns);
     }, function () {});
     window.claude.use("artifact").then(function (ns) { artifactNs = ns; capabilityKnown = true; updateSaveBar(); }, function () { capabilityKnown = true; updateSaveBar(); });
   } else {
     capabilityKnown = true;
     document.getElementById("save").hidden = true;
-    document.getElementById("download-json").hidden = false;
+    showDownloads(true);
     updateSaveBar();
   }
 })();
-</script></body></html>
+</script>
+</body></html>
