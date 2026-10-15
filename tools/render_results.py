@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Render results/results.json (saved from the results page) as RESULTS.md.
+"""Render results/results.json (downloaded from the results page) as RESULTS.md.
+
+results/annotations.json, if present, adds per-desktop "analysis" text and
+per-cell "annotations" footnotes kept separate from the exported results.
 
 GitHub strips CSS from Markdown, so status colour comes from emoji.
 Usage: python3 tools/render_results.py [results.json] [RESULTS.md]
@@ -12,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "results" / "results.json"
 OUT = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "RESULTS.md"
+ANN = SRC.with_name("annotations.json")
 
 STATUS = {"works": "✅", "partial": "🟡", "broken": "❌", "na": "➖", "": "·"}
 LEGEND = "✅ works · 🟡 partly works · ❌ broken · ➖ not applicable · · not tested"
@@ -49,6 +53,9 @@ def tested(env):
 
 def main():
     data = json.loads(SRC.read_text())
+    ann = json.loads(ANN.read_text()) if ANN.exists() else {}
+    for eid, extra in ann.items():
+        data["envs"].setdefault(eid, {}).update(extra)
     envs = [(eid, name, data["envs"].get(eid, {})) for eid, name, _ in ENVS]
     short = {eid: s for eid, _, s in ENVS}
     done = [(eid, name, env) for eid, name, env in envs if tested(env)]

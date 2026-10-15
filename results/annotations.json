@@ -1,0 +1,5 @@
+{
+  "noctalia": {
+    "analysis": "**Why notifications and media show 🟡 in every column:** none of it depends on the desktop file. From Noctalia's source: notification icons come only from the notification itself (`app_icon`, `image-path` or `image-data`), and the probe deliberately sends none. A notification is clickable only when it carries a `default` action, which tests 2 and 2b don't send; test 2c does. The media widget shows album art rather than an app icon, never calls MPRIS `Raise`, and uses `DesktopEntry` only to match players to audio streams."
+  }
+}

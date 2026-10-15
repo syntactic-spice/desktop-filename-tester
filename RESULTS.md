@@ -16,9 +16,9 @@ Install modes:
 |---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | 1 · Window ↔ launcher | ✅ | 🟡 | ✅ | 🟡 | ✅ | ✅ | ✅ | ✅ |
 | 2 · Notification, this process | ✅ | 🟡 | ✅ | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
-| 2 · Notification, child process | ❌ | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
+| 2 · Notification, child process | ✅ | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | 2b · GNotification | ✅ | ❌ | ❌ | ❌ | 🟡 | 🟡 | 🟡 | 🟡 |
-| 2c · Notification with click action | · | · | · | · | · | · | · | · |
+| 2c · Notification with click action | ✅ | 🟡 | ✅ | 🟡 | 🟡 | 🟡 | 🟡 | 🟡 |
 | 3 · Badge + progress | ✅ | ❌ | ❌ | ❌ | ➖ | ➖ | ➖ | ➖ |
 | 4 · `dtprobe://` registered at runtime | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
 | 4 · `dtprobe-static://` declared in file | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -33,16 +33,14 @@ Distro: Ubuntu 26.04.1 · Desktop / shell: 50 · Session: Wayland
 |---|---|---|---|---|
 | 1 · Window ↔ launcher | ✅ | 🟡 generic icon, cannot be pinned | ✅ | 🟡 generic icon, cannot be pinned |
 | 2 · Notification, this process | ✅ | 🟡 generic icon, ID instead of app name, raise on click | ✅ | 🟡 generic icon, ID instead of app name, raise on click |
-| 2 · Notification, child process | ❌ Notification immediately disappears [^gnome1] | 🟡 generic icon, actual name, raise on click | 🟡 generic icon, ID instead of app name, does not raise on click | 🟡 generic icon, actual name, does not raise on click |
+| 2 · Notification, child process | ✅ | 🟡 generic icon, actual name, does not raise on click | 🟡 generic icon, actual name, does not raise on click | 🟡 generic icon, actual name, does not raise on click |
 | 2b · GNotification | ✅ | ❌ No notification | ❌ No notification | ❌ No notification |
-| 2c · Notification with click action | · | · | · | · |
+| 2c · Notification with click action | ✅ | 🟡 generic icon, ID instead of name, raise on click | ✅ | 🟡 generic icon, ID instead of app name, raise on click |
 | 3 · Badge + progress | ✅ | ❌ | ❌ | ❌ |
 | 4 · `dtprobe://` registered at runtime | ✅ | ❌ | ❌ | ❌ |
 | 4 · `dtprobe-static://` declared in file | ✅ | ✅ | ✅ | ✅ |
 | 5 · Portal `Registry.Register` | ✅ | ❌ | ❌ | ❌ |
 | 6 · MPRIS media widget | ✅ | 🟡 generic icon, actual name, click sends a new notification which raises on click | 🟡 generic icon, actual name, click sends a new notification which raises on click | 🟡 generic icon, actual name, click sends a new notification which raises on click |
-
-[^gnome1]: Probe artifact, not a GNOME bug. GNOME removes notifications from an identified app when the sender leaves the session bus, and the probe's helper process exited right after sending. Disappearing here shows GNOME did match the app. Fixed in the probe (the helper now stays until the notification closes); re-test pending.
 
 ## KDE Plasma
 
@@ -58,7 +56,7 @@ Distro: Ubuntu 26.04.1 · Session: Wayland
 | 2 · Notification, this process | 🟡 no icon, unclickable | 🟡 no icon, unclickable | 🟡 no icon, unclickable | 🟡 no icon, unclickable |
 | 2 · Notification, child process | 🟡 no icon, unclickable | 🟡 no icon, unclickable | 🟡 no icon, unclickable | 🟡 no icon, unclickable |
 | 2b · GNotification | 🟡 no icon, unclickable | 🟡 no icon, unclickable | 🟡 no icon, unclickable | 🟡 no icon, unclickable |
-| 2c · Notification with click action | · | · | · | · |
+| 2c · Notification with click action | 🟡 No icon, raise on click | 🟡 No icon, raise on click | 🟡 No icon, raise on click | 🟡 No icon, raise on click |
 | 3 · Badge + progress | ➖ unsupported | ➖ unsupported | ➖ unsupported | ➖ unsupported |
 | 4 · `dtprobe://` registered at runtime | ✅ | ❌ | ❌ | ❌ |
 | 4 · `dtprobe-static://` declared in file | ✅ | ✅ | ✅ | ✅ |

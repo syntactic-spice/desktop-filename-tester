@@ -123,7 +123,14 @@ builds `dist/` for x86_64 and aarch64. The app itself is
 
 ## Recording results
 
-`results/results.json` holds the recorded results. After editing it, regenerate
-the tables with `python3 tools/render_results.py`. Each cell is
-`{"s": "works" | "partial" | "broken" | "na" | "", "n": "notes"}`, keyed
-`<test>|<install mode>` (for example `fdochild|A`).
+Fill in the results page, then press **Download JSON** (or **Copy JSON**) and
+save it over `results/results.json`. Regenerate the tables with:
+
+```sh
+python3 tools/render_results.py
+```
+
+Each cell is `{"s": "works" | "partial" | "broken" | "na" | "", "n": "notes"}`,
+keyed `<test>|<install mode>` (for example `fdochild|A`).
+`results/annotations.json` holds explanations that aren't part of the recorded
+results: a per-desktop `analysis` paragraph and per-cell `annotations` footnotes.

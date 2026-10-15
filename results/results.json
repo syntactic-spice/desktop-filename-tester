@@ -1,5 +1,5 @@
 {
-  "savedAt": "2026-10-15T09:57:53.894Z",
+  "savedAt": "2026-10-15T10:58:51.526Z",
   "envs": {
     "gnome": {
       "meta": {
@@ -43,16 +43,16 @@
           "n": "generic icon, ID instead of app name, raise on click"
         },
         "fdochild|A": {
-          "s": "broken",
-          "n": "Notification immediately disappears"
+          "s": "works",
+          "n": ""
         },
         "fdochild|B": {
           "s": "partial",
-          "n": "generic icon, actual name, raise on click"
+          "n": "generic icon, actual name, does not raise on click"
         },
         "fdochild|C": {
           "s": "partial",
-          "n": "generic icon, ID instead of app name, does not raise on click"
+          "n": "generic icon, actual name, does not raise on click"
         },
         "fdochild|D": {
           "s": "partial",
@@ -73,6 +73,22 @@
         "gnotif|D": {
           "s": "broken",
           "n": "No notification"
+        },
+        "clickaction|A": {
+          "s": "works",
+          "n": ""
+        },
+        "clickaction|B": {
+          "s": "partial",
+          "n": "generic icon, ID instead of name, raise on click"
+        },
+        "clickaction|C": {
+          "s": "works",
+          "n": ""
+        },
+        "clickaction|D": {
+          "s": "partial",
+          "n": "generic icon, ID instead of app name, raise on click"
         },
         "badge|A": {
           "s": "works",
@@ -155,10 +171,7 @@
           "n": "generic icon, actual name, click sends a new notification which raises on click"
         }
       },
-      "notes": "",
-      "annotations": {
-        "fdochild|A": "Probe artifact, not a GNOME bug. GNOME removes notifications from an identified app when the sender leaves the session bus, and the probe's helper process exited right after sending. Disappearing here shows GNOME did match the app. Fixed in the probe (the helper now stays until the notification closes); re-test pending."
-      }
+      "notes": ""
     },
     "kde": {
       "meta": {
@@ -230,6 +243,22 @@
           "n": ""
         },
         "gnotif|D": {
+          "s": "",
+          "n": ""
+        },
+        "clickaction|A": {
+          "s": "",
+          "n": ""
+        },
+        "clickaction|B": {
+          "s": "",
+          "n": ""
+        },
+        "clickaction|C": {
+          "s": "",
+          "n": ""
+        },
+        "clickaction|D": {
           "s": "",
           "n": ""
         },
@@ -389,6 +418,22 @@
           "s": "partial",
           "n": "no icon, unclickable"
         },
+        "clickaction|A": {
+          "s": "partial",
+          "n": "No icon, raise on click"
+        },
+        "clickaction|B": {
+          "s": "partial",
+          "n": "No icon, raise on click"
+        },
+        "clickaction|C": {
+          "s": "partial",
+          "n": "No icon, raise on click"
+        },
+        "clickaction|D": {
+          "s": "partial",
+          "n": "No icon, raise on click"
+        },
         "badge|A": {
           "s": "na",
           "n": "unsupported"
@@ -470,8 +515,7 @@
           "n": "no icon, no option to raise, receives events"
         }
       },
-      "notes": "",
-      "analysis": "**Why notifications and media show 🟡 in every column:** none of it depends on the desktop file. From Noctalia's source: notification icons come only from the notification itself (`app_icon`, `image-path` or `image-data`), and the probe deliberately sends none. A notification is clickable only when it carries a `default` action, which tests 2 and 2b don't send; test 2c does. The media widget shows album art rather than an app icon, never calls MPRIS `Raise`, and uses `DesktopEntry` only to match players to audio streams."
+      "notes": ""
     }
   }
 }
