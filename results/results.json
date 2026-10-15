@@ -1,13 +1,13 @@
 {
-  "savedAt": "2026-10-15T10:58:51.526Z",
+  "savedAt": "2026-10-15T12:44:39.297Z",
   "envs": {
     "gnome": {
       "meta": {
         "distro": "Ubuntu 26.04.1",
         "desktop": "50",
         "session": "Wayland",
-        "portal": "",
-        "extras": ""
+        "portal": "1.21.1",
+        "extras": "Ubuntu dock (dash to dock)"
       },
       "cells": {
         "win|A": {
@@ -169,6 +169,178 @@
         "mpris|D": {
           "s": "partial",
           "n": "generic icon, actual name, click sends a new notification which raises on click"
+        }
+      },
+      "notes": ""
+    },
+    "noctalia": {
+      "meta": {
+        "distro": "Ubuntu 26.04.1",
+        "desktop": "Niri 26.04/Noctalia 5.2.1",
+        "session": "Wayland",
+        "portal": "1.21.1",
+        "extras": "Noctalia dock"
+      },
+      "cells": {
+        "win|A": {
+          "s": "works",
+          "n": ""
+        },
+        "win|B": {
+          "s": "works",
+          "n": ""
+        },
+        "win|C": {
+          "s": "works",
+          "n": ""
+        },
+        "win|D": {
+          "s": "works",
+          "n": ""
+        },
+        "fdo|A": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdo|B": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdo|C": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdo|D": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdochild|A": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdochild|B": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdochild|C": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "fdochild|D": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "gnotif|A": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "gnotif|B": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "gnotif|C": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "gnotif|D": {
+          "s": "partial",
+          "n": "no icon, unclickable"
+        },
+        "clickaction|A": {
+          "s": "partial",
+          "n": "No icon, raise on click"
+        },
+        "clickaction|B": {
+          "s": "partial",
+          "n": "No icon, raise on click"
+        },
+        "clickaction|C": {
+          "s": "partial",
+          "n": "No icon, raise on click"
+        },
+        "clickaction|D": {
+          "s": "partial",
+          "n": "No icon, raise on click"
+        },
+        "badge|A": {
+          "s": "na",
+          "n": "unsupported"
+        },
+        "badge|B": {
+          "s": "na",
+          "n": "unsupported"
+        },
+        "badge|C": {
+          "s": "na",
+          "n": "unsupported"
+        },
+        "badge|D": {
+          "s": "na",
+          "n": "unsupported"
+        },
+        "rtscheme|A": {
+          "s": "works",
+          "n": ""
+        },
+        "rtscheme|B": {
+          "s": "broken",
+          "n": ""
+        },
+        "rtscheme|C": {
+          "s": "broken",
+          "n": ""
+        },
+        "rtscheme|D": {
+          "s": "broken",
+          "n": ""
+        },
+        "staticscheme|A": {
+          "s": "works",
+          "n": ""
+        },
+        "staticscheme|B": {
+          "s": "works",
+          "n": ""
+        },
+        "staticscheme|C": {
+          "s": "works",
+          "n": ""
+        },
+        "staticscheme|D": {
+          "s": "works",
+          "n": ""
+        },
+        "portal|A": {
+          "s": "works",
+          "n": ""
+        },
+        "portal|B": {
+          "s": "broken",
+          "n": ""
+        },
+        "portal|C": {
+          "s": "broken",
+          "n": ""
+        },
+        "portal|D": {
+          "s": "broken",
+          "n": ""
+        },
+        "mpris|A": {
+          "s": "partial",
+          "n": "no icon, no option to raise, receives events"
+        },
+        "mpris|B": {
+          "s": "partial",
+          "n": "no icon, no option to raise, receives events"
+        },
+        "mpris|C": {
+          "s": "partial",
+          "n": "no icon, no option to raise, receives events"
+        },
+        "mpris|D": {
+          "s": "partial",
+          "n": "no icon, no option to raise, receives events"
         }
       },
       "notes": ""
@@ -341,178 +513,6 @@
         "mpris|D": {
           "s": "",
           "n": ""
-        }
-      },
-      "notes": ""
-    },
-    "noctalia": {
-      "meta": {
-        "distro": "Ubuntu 26.04.1",
-        "desktop": "",
-        "session": "Wayland",
-        "portal": "",
-        "extras": ""
-      },
-      "cells": {
-        "win|A": {
-          "s": "works",
-          "n": ""
-        },
-        "win|B": {
-          "s": "works",
-          "n": ""
-        },
-        "win|C": {
-          "s": "works",
-          "n": ""
-        },
-        "win|D": {
-          "s": "works",
-          "n": ""
-        },
-        "fdo|A": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "fdo|B": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "fdo|C": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "fdo|D": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "fdochild|A": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "fdochild|B": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "fdochild|C": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "fdochild|D": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "gnotif|A": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "gnotif|B": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "gnotif|C": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "gnotif|D": {
-          "s": "partial",
-          "n": "no icon, unclickable"
-        },
-        "clickaction|A": {
-          "s": "partial",
-          "n": "No icon, raise on click"
-        },
-        "clickaction|B": {
-          "s": "partial",
-          "n": "No icon, raise on click"
-        },
-        "clickaction|C": {
-          "s": "partial",
-          "n": "No icon, raise on click"
-        },
-        "clickaction|D": {
-          "s": "partial",
-          "n": "No icon, raise on click"
-        },
-        "badge|A": {
-          "s": "na",
-          "n": "unsupported"
-        },
-        "badge|B": {
-          "s": "na",
-          "n": "unsupported"
-        },
-        "badge|C": {
-          "s": "na",
-          "n": "unsupported"
-        },
-        "badge|D": {
-          "s": "na",
-          "n": "unsupported"
-        },
-        "rtscheme|A": {
-          "s": "works",
-          "n": ""
-        },
-        "rtscheme|B": {
-          "s": "broken",
-          "n": ""
-        },
-        "rtscheme|C": {
-          "s": "broken",
-          "n": ""
-        },
-        "rtscheme|D": {
-          "s": "broken",
-          "n": ""
-        },
-        "staticscheme|A": {
-          "s": "works",
-          "n": ""
-        },
-        "staticscheme|B": {
-          "s": "works",
-          "n": ""
-        },
-        "staticscheme|C": {
-          "s": "works",
-          "n": ""
-        },
-        "staticscheme|D": {
-          "s": "works",
-          "n": ""
-        },
-        "portal|A": {
-          "s": "works",
-          "n": ""
-        },
-        "portal|B": {
-          "s": "broken",
-          "n": ""
-        },
-        "portal|C": {
-          "s": "broken",
-          "n": ""
-        },
-        "portal|D": {
-          "s": "broken",
-          "n": ""
-        },
-        "mpris|A": {
-          "s": "partial",
-          "n": "no icon, no option to raise, receives events"
-        },
-        "mpris|B": {
-          "s": "partial",
-          "n": "no icon, no option to raise, receives events"
-        },
-        "mpris|C": {
-          "s": "partial",
-          "n": "no icon, no option to raise, receives events"
-        },
-        "mpris|D": {
-          "s": "partial",
-          "n": "no icon, no option to raise, receives events"
         }
       },
       "notes": ""

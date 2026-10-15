@@ -1,5 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Desktop Filename Tester Results</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@600;700&family=Red+Hat+Mono:wght@400;500&family=Red+Hat+Text:wght@400;500;600&display=swap"><style id="css">
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><title>Desktop Filename Tester Results</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@600;700&family=Red+Hat+Mono:wght@400;500&family=Red+Hat+Text:wght@400;500;600&display=swap"><style id="css">
 /* Layout: a lab results sheet. Header with the install modes, then one section per desktop: environment fields above a test x install-mode grid. A save bar sticks to the bottom. */
 :root {
   --bg: #f4f6f9;
@@ -46,11 +45,14 @@ code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
 .intro .lede { color: var(--muted); }
 .repo { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-decoration: none; align-self: flex-start; }
 .repo:hover { text-decoration: underline; }
+.sibling { align-self: flex-start; color: var(--accent); }
 .modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
 .mode { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .mode b { font-family: var(--font-display); }
 .mode .tag { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
 .mode code { color: var(--muted); overflow-wrap: anywhere; }
+.mode code.cmds { white-space: pre-wrap; overflow-wrap: break-word; color: var(--ink); }
+.mode code .comment { color: var(--muted); }
 nav.envnav { display: flex; flex-wrap: wrap; gap: 8px; }
 nav.envnav a { text-decoration: none; color: var(--ink); border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; display: inline-flex; gap: 8px; align-items: baseline; }
 nav.envnav a:hover { border-color: var(--accent); }
@@ -109,6 +111,8 @@ td.cell[data-s="na"] { background: var(--na-bg); }
   var FONT_LINK = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@600;700&family=Red+Hat+Mono:wght@400;500&family=Red+Hat+Text:wght@400;500;600&display=swap">';
   var FALLBACK_RESET = ":root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}";
   var REPO = "https://github.com/syntactic-spice/desktop-filename-tester";
+  var PAGES = "https://syntactic-spice.github.io/desktop-filename-tester/";
+  var IS_TEMPLATE = /template\.html$/.test(location.pathname);
   // One draft per page, so the empty and filled-in copies on one site keep separate edits.
   var DRAFT_KEY = "dtprobe-results-draft:" + location.pathname;
 
@@ -263,9 +267,9 @@ td.cell[data-s="na"] { background: var(--na-bg); }
   function render() {
     var root = document.getElementById("root");
     var nav = ENVS.map(function (env) { return '<a href="#' + env.id + '">' + esc(env.name) + ' <span class="count" data-count="' + env.id + '">' + counts(env.id) + "</span></a>"; }).join("");
-    var modes = COLS.map(function (c) { return '<div class="mode"><span class="tag">' + c.id + "</span><b>" + esc(c.label.slice(3)) + "</b><code>./dtprobe-integrate.sh " + esc(c.cmd) + "</code></div>"; }).join("");
+    var modes = COLS.map(function (c) { return '<div class="mode"><span class="tag">' + c.id + "</span><b>" + esc(c.label.slice(3)) + "</b><code class=\"cmds\"><span class=\"comment\"># Uninstall any existing installs</span>\n./dtprobe-integrate.sh uninstall\n./dtprobe-integrate.sh " + esc(c.cmd) + "</code></div>"; }).join("");
     root.innerHTML =
-      '<header class="intro"><a class="repo" href="' + REPO + '">' + esc(REPO.replace("https://", "")) + "</a><h1>" + esc(TITLE) + "</h1>" +
+      '<header class="intro"><a class="repo" href="' + REPO + '">' + esc(REPO.replace("https://", "")) + "</a><h1>" + esc(TITLE) + "</h1>" + siblingLink() +
       '<p class="lede">One grid per desktop: each test from the probe against each way of installing its .desktop file. Each cell shows what the source code predicts; record what you actually see. <code>$AppimagePath</code> is the full path to the AppImage. Run <code>./dtprobe-integrate.sh uninstall</code> and quit the probe between columns.</p></header>' +
       '<div class="modes">' + modes + "</div>" +
       '<div id="stale" hidden class="notice"><span>This browser has unsaved edits from before the last save.</span><button type="button" class="btn" id="restore-draft">Restore them</button><button type="button" class="btn" id="discard-draft">Discard</button></div>' +
@@ -276,6 +280,14 @@ td.cell[data-s="na"] { background: var(--na-bg); }
     document.getElementById("stale").hidden = !staleDraft;
     root.querySelectorAll("textarea").forEach(autosize);
     updateSaveBar();
+  }
+  // The empty template and the filled-in results link to each other.
+  // Relative on GitHub Pages or a local copy; the Pages address inside Claude.
+  function siblingLink() {
+    var base = standalone ? "" : PAGES;
+    return IS_TEMPLATE
+      ? '<a class="sibling" href="' + base + 'index.html"><strong>My Results</strong></a>'
+      : '<a class="sibling" href="' + base + 'template.html">Empty template</a>';
   }
   function autosize(t) { if (t.id === "md-out") return; t.style.height = "auto"; t.style.height = Math.max(32, t.scrollHeight + 2) + "px"; }
   function updateCounts(envId) { document.querySelectorAll('[data-count="' + envId + '"]').forEach(function (el) { el.textContent = counts(envId); }); }
@@ -434,5 +446,4 @@ td.cell[data-s="na"] { background: var(--na-bg); }
     updateSaveBar();
   }
 })();
-</script>
-</body></html>
+</script></body></html>

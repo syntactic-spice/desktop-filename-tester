@@ -29,7 +29,7 @@ Install modes:
 
 ## GNOME
 
-Distro: Ubuntu 26.04.1 · Desktop / shell: 50 · Session: Wayland
+Distro: Ubuntu 26.04.1 · Desktop / shell: 50 · Session: Wayland · xdg-desktop-portal: 1.21.1 · Dock / extensions: Ubuntu dock (dash to dock)
 
 | Test | A: original name | B: renamed | C: renamed + StartupWMClass | D: in a subdirectory |
 |---|---|---|---|---|
@@ -46,7 +46,7 @@ Distro: Ubuntu 26.04.1 · Desktop / shell: 50 · Session: Wayland
 
 ## Noctalia + niri
 
-Distro: Ubuntu 26.04.1 · Session: Wayland
+Distro: Ubuntu 26.04.1 · Desktop / shell: Niri 26.04/Noctalia 5.2.1 · Session: Wayland · xdg-desktop-portal: 1.21.1 · Dock / extensions: Noctalia dock
 
 | Test | A: original name | B: renamed | C: renamed + StartupWMClass | D: in a subdirectory |
 |---|---|---|---|---|
