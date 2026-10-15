@@ -60,7 +60,9 @@ def main():
     short = {eid: s for eid, _, s in ENVS}
     done = [(eid, name, env) for eid, name, env in envs if tested(env)]
 
-    out = ["# Desktop ID Probe results", "",
+    out = ["# Desktop Filename Tester results", "",
+           "[Repository](https://github.com/syntactic-spice/desktop-filename-tester) · "
+           "[interactive results](https://syntactic-spice.github.io/desktop-filename-tester/)", "",
            "What breaks when an AppImage's `.desktop` file is installed under a different name.",
            "Install modes:", ""]
     out += [f"- **{label}**: `./dtprobe-integrate.sh {cmd}`" for _, label, cmd in COLS]

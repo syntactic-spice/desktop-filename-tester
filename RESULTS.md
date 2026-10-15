@@ -1,4 +1,6 @@
-# Desktop ID Probe results
+# Desktop Filename Tester results
+
+[Repository](https://github.com/syntactic-spice/desktop-filename-tester) · [interactive results](https://syntactic-spice.github.io/desktop-filename-tester/)
 
 What breaks when an AppImage's `.desktop` file is installed under a different name.
 Install modes:

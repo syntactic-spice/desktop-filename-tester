@@ -20,7 +20,8 @@ and one button per feature that looks the app up by that ID. Install its
 ## Results so far
 
 See [RESULTS.md](RESULTS.md) for GNOME and Noctalia + niri; KDE Plasma is not tested yet.
-The interactive results page is `docs/index.html` (see [Recording results](#recording-results)).
+Interactive version: [results](https://syntactic-spice.github.io/desktop-filename-tester/) ·
+[empty sheet for your own tests](https://syntactic-spice.github.io/desktop-filename-tester/template.html).
 
 ## Setup
 
@@ -124,10 +125,11 @@ builds `dist/` for x86_64 and aarch64. The app itself is
 
 ## Recording results
 
-`docs/index.html` is the results page. Serve it with GitHub Pages (Settings →
-Pages → deploy from the `main` branch, `/docs` folder) or open it locally.
-Outside Claude it can't save into the page itself: your edits stay in that
-browser's local storage until you clear site data. Press **Download JSON** and
+There are two copies of the results page in `docs/`: `index.html` with the
+results above, and `template.html`, an empty sheet. GitHub Pages serves them
+(Settings → Pages → deploy from the `main` branch, `/docs` folder); you can also
+open them locally. Edits stay in that browser's local storage, separately for
+each page, until you clear site data. Press **Download JSON** and
 save it over `results/results.json` to keep them. Regenerate the tables with:
 
 ```sh
